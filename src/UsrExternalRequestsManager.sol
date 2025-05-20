@@ -4,7 +4,8 @@ pragma solidity ^0.8.25;
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {IERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {AccessControlDefaultAdminRules} from "@openzeppelin/contracts/access/extensions/AccessControlDefaultAdminRules.sol";
+import {AccessControlDefaultAdminRules} from
+    "@openzeppelin/contracts/access/extensions/AccessControlDefaultAdminRules.sol";
 import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
 import {ISimpleToken} from "./interfaces/ISimpleToken.sol";
 import {IUsrExternalRequestsManager} from "./interfaces/IUsrExternalRequestsManager.sol";
@@ -114,7 +115,7 @@ contract UsrExternalRequestsManager is IUsrExternalRequestsManager, AccessContro
         uint8 _v,
         bytes32 _r,
         bytes32 _s
-    ) external allowedToken(_depositTokenAddress){
+    ) external allowedToken(_depositTokenAddress) {
         IERC20Permit tokenPermit = IERC20Permit(_depositTokenAddress);
         // the use of `try/catch` allows the permit to fail and makes the code tolerant to frontrunning.
         // solhint-disable-next-line no-empty-blocks
@@ -131,7 +132,7 @@ contract UsrExternalRequestsManager is IUsrExternalRequestsManager, AccessContro
 
         IERC20 depositedToken = IERC20(request.token);
         depositedToken.safeTransfer(request.provider, request.amount);
-        
+
         emit MintRequestCancelled(_id);
     }
 
@@ -228,7 +229,7 @@ contract UsrExternalRequestsManager is IUsrExternalRequestsManager, AccessContro
         IERC20 token = IERC20(_tokenAddress);
         balance = token.balanceOf(address(this));
         token.safeTransfer(msg.sender, balance);
-        
+
         emit EmergencyWithdrawn(_tokenAddress, balance);
     }
 
@@ -256,10 +257,12 @@ contract UsrExternalRequestsManager is IUsrExternalRequestsManager, AccessContro
         emit InstantBurn(msg.sender, _receiver, _amount, _withdrawalTokenAddress, _minExpectedAmount);
     }
 
-    function burnInstantly(uint256 _amount, address _receiver, address _withdrawalTokenAddress, uint256 _minExpectedAmount)
-        public
-        whenNotPaused
-    {
+    function burnInstantly(
+        uint256 _amount,
+        address _receiver,
+        address _withdrawalTokenAddress,
+        uint256 _minExpectedAmount
+    ) public whenNotPaused {
         // IERC20(ISSUE_TOKEN_ADDRESS).safeTransferFrom(msg.sender, address(this), _amount);
         // uint256 withdrawalTokenAmount = usrRedemptionExtension.redeem(_amount, _receiver, _withdrawalTokenAddress);
         // if (withdrawalTokenAmount < _minExpectedAmount) {

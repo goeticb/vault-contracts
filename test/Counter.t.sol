@@ -7,7 +7,6 @@ import {VaultTreasury} from "../src/VaultTreasury.sol";
 import {VaultTokenShare} from "../src/VaultTokenShare.sol";
 import {UsrExternalRequestsManager} from "../src/UsrExternalRequestsManager.sol";
 
-
 contract CounterTest is Test {
     Counter public counter;
     VaultTokenShare public valutTokenShare;
@@ -18,8 +17,15 @@ contract CounterTest is Test {
         counter = new Counter();
         counter.setNumber(0);
         valutTokenShare = new VaultTokenShare("Test", "TST", address(this));
-        vaultTrasury = new VaultTreasury(address(uint160(bytes20("Mocked USDT Address"))),address(this));
-        usrExternalRequestsManager = new UsrExternalRequestsManager(address(this), address(valutTokenShare), address(uint160(bytes20("Mocked USDT Address"))), 18, address(vaultTrasury),address(1));
+        vaultTrasury = new VaultTreasury(address(uint160(bytes20("Mocked USDT Address"))), address(this));
+        usrExternalRequestsManager = new UsrExternalRequestsManager(
+            address(this),
+            address(valutTokenShare),
+            address(uint160(bytes20("Mocked USDT Address"))),
+            18,
+            address(vaultTrasury),
+            address(1)
+        );
     }
 
     function test_Increment() public {
@@ -30,7 +36,7 @@ contract CounterTest is Test {
 
     function testFuzz_SetNumber(uint256 x) public {
         counter.setNumber(x);
-        
+
         assertEq(counter.number(), x);
     }
 }

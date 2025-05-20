@@ -32,7 +32,7 @@ interface IUsrExternalRequestsManager is IDefaultErrors {
 
     event TreasurySet(address treasuryAddress);
     event UsrRedemptionExtensionSet(address usrRedemptionExtensionAddress);
-    
+
     event EmergencyWithdrawn(address tokenAddress, uint256 amount);
 
     error IllegalState(State expected, State current);
@@ -104,8 +104,12 @@ interface IUsrExternalRequestsManager is IDefaultErrors {
 
     function emergencyWithdraw(address _token) external;
 
-    function burnInstantly(uint256 _amount, address _receiver, address _withdrawalTokenAddress, uint256 _minExpectedAmount)
-        external;
+    function burnInstantly(
+        uint256 _amount,
+        address _receiver,
+        address _withdrawalTokenAddress,
+        uint256 _minExpectedAmount
+    ) external;
 
     function burnInstantly(uint256 _amount, address _withdrawalTokenAddress, uint256 _minExpectedAmount) external;
 
